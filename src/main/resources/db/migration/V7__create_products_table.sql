@@ -1,4 +1,4 @@
-CREATE TABLE products (
+CREATE TABLE IF NOT EXISTS products (
   product_id       VARCHAR(50) PRIMARY KEY,
   merchant_id      VARCHAR(50) NOT NULL,
   product_name     VARCHAR(255) NOT NULL,
