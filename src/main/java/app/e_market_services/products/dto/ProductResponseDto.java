@@ -1,4 +1,4 @@
-package app.e_market_services.product.dto;
+package app.e_market_services.products.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
