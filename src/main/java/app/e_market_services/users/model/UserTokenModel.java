@@ -1,4 +1,4 @@
-package app.e_market_services.user.model;
+package app.e_market_services.users.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

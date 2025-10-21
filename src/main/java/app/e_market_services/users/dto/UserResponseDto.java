@@ -1,4 +1,4 @@
-package app.e_market_services.user.dto;
+package app.e_market_services.users.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserResponseDto {
-    private Long id;
-    private String name;
+    private String userId;
+    private String firstName;
     private String email;
 }

@@ -1,8 +1,9 @@
-package app.e_market_services.user.controller;
+package app.e_market_services.users.controller;
 
 import java.util.List;
 import java.util.Map;
 
+import app.e_market_services.users.dto.TokenResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -21,21 +22,20 @@ import app.e_market_services.common.ApiException;
 import app.e_market_services.common.constant.HttpStatusDesc;
 import app.e_market_services.common.response.ApiResponse;
 import app.e_market_services.jwt.service.JwtService;
-import app.e_market_services.user.dto.UserRequestDto;
-import app.e_market_services.user.dto.UserResponseDto;
-import app.e_market_services.user.model.UserTokenModel;
-import app.e_market_services.user.service.UserService;
+import app.e_market_services.users.dto.UserRequestDto;
+import app.e_market_services.users.dto.UserResponseDto;
+import app.e_market_services.users.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/api/v1/user")
-public class UserController {
+@RequestMapping("/api/v1/users")
+public class UsersController {
 
-    private static final Logger log = LoggerFactory.getLogger(UserController.class);
+    private static final Logger log = LoggerFactory.getLogger(UsersController.class);
     private final UserService userService;
     private final JwtService jwtService;
 
-    public UserController(UserService userService, JwtService jwtService) {
+    public UsersController(UserService userService, JwtService jwtService) {
         this.userService = userService;
         this.jwtService = jwtService;
     }
@@ -59,7 +59,7 @@ public class UserController {
 
     // TODO: UserTokenModel should be replace with DTO
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<UserTokenModel>> loginUser(@RequestBody UserRequestDto user,
+    public ResponseEntity<ApiResponse<TokenResponse>> loginUser(@RequestBody UserRequestDto user,
             HttpServletResponse response) throws JsonProcessingException {
         log.info("User {}", new ObjectMapper().writeValueAsString(user));
         Boolean isValid = userService.verifyUser(user);
@@ -94,9 +94,9 @@ public class UserController {
         response.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
 
         return ResponseEntity.ok()
-                .body(ApiResponse.<UserTokenModel>builder().status(HttpStatusDesc.SUCCESS)
+                .body(ApiResponse.<TokenResponse>builder().status(HttpStatusDesc.SUCCESS)
                         .result(
-                                UserTokenModel.builder()
+                                TokenResponse.builder()
                                         .accessToken(accessToken)
                                         .refreshToken(refreshToken).build())
                         .build());

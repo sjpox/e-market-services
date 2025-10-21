@@ -2,13 +2,11 @@ package app.e_market_services.categories.model;
 
 import app.e_market_services.products.model.Products;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Builder
@@ -19,25 +17,14 @@ import java.util.UUID;
 public class Categories {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    public UUID category_id;
-    public String category_name;
+    @UuidGenerator
+    @Column(name = "category_id")
+    public String categoryId;
+    public String categoryName;
     public String description;
 
     @ManyToMany(mappedBy = "categories")
-    private Products products;
-
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
-
-    @PrePersist
-    public void prePersist() {
-        created_at = LocalDateTime.now();
-        updated_at = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        updated_at = LocalDateTime.now();
-    }
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Set<Products> products = new HashSet<>();
 }

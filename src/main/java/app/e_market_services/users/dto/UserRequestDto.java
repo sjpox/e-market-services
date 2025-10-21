@@ -1,4 +1,4 @@
-package app.e_market_services.user.dto;
+package app.e_market_services.users.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
