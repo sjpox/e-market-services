@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS orders (
+  order_id      VARCHAR(50) PRIMARY KEY,
+  user_id       VARCHAR(50) NOT NULL,
+  merchant_id   VARCHAR(50) NOT NULL,
+  total_amount  DECIMAL(10,2) NOT NULL,
+  order_status  ENUM('PENDING','PAID','SHIPPED','DELIVERED','CANCELLED') DEFAULT 'PENDING',
+  created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  FOREIGN KEY (merchant_id) REFERENCES merchants(merchant_id)
+);

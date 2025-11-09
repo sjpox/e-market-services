@@ -49,6 +49,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             username = jwtService.extractUsername(token);
             log.info("Extracted Username: {}", username);
         } catch (Exception ex) {
+            log.info(ex.toString());
         }
 
         try {
