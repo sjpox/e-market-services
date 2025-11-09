@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,5 +28,6 @@ public class Categories {
     @ManyToMany(mappedBy = "categories")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private Set<Products> products = new HashSet<>();
+    @Builder.Default
+    private List<Products> products = new ArrayList<>();
 }
