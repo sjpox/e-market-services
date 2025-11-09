@@ -10,9 +10,7 @@ import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Builder
@@ -40,7 +38,8 @@ public class Products {
     )
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private Set<Categories> categories = new HashSet<>();
+    @Builder.Default
+    private List<Categories> categories = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "merchant_id")
