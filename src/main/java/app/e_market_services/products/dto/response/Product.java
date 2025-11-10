@@ -1,6 +1,6 @@
 package app.e_market_services.products.dto.response;
 
-import app.e_market_services.categories.dto.Category;
+import app.e_market_services.categories.dto.response.Category;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 

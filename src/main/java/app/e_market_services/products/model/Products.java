@@ -1,17 +1,18 @@
 package app.e_market_services.products.model;
 
 import app.e_market_services.base.Model.BaseEntity;
-import app.e_market_services.categories.model.Categories;
+import app.e_market_services.categories.model.Category;
 import app.e_market_services.mechants.model.Merchants;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
 import java.util.*;
 
 @Entity
-@Builder
+@SuperBuilder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,7 +37,7 @@ public class Products extends BaseEntity {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @Builder.Default
-    private List<Categories> categories = new ArrayList<>();
+    private List<Category> categories = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "merchant_id")
