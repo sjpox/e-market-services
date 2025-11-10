@@ -1,21 +1,16 @@
 package app.e_market_services.products.service;
 
 import app.e_market_services.categories.dto.Category;
-import app.e_market_services.categories.model.Categories;
-import app.e_market_services.products.dto.ProductsResponse;
+import app.e_market_services.products.dto.response.ProductDetails;
+import app.e_market_services.products.dto.response.Products;
 import app.e_market_services.products.repository.ProductsRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -30,9 +25,9 @@ public class ProductService {
         this.objectMapper = objectMapper;
     }
 
-    public List<ProductsResponse> findAll() {
+    public List<Products> findAll() {
         return productsRepository.findAllWithCategoriesAndMerchants().stream()
-                .map(product -> ProductsResponse.builder()
+                .map(product -> Products.builder()
                         .productId(product.getProductId())
                         .productName(product.getProductName())
                         .description(product.getDescription())
@@ -45,7 +40,7 @@ public class ProductService {
                 .toList();
     }
 
-    public List<ProductsResponse> findProductLists() {
+    public List<Products> findProductLists() {
         logger.info("service > findProductLists");
         return productsRepository.findAll().stream()
                 .map(product -> {
@@ -53,7 +48,7 @@ public class ProductService {
                             .map(cat -> new Category(cat.getCategoryId(), cat.getCategoryName()))
                             .collect(Collectors.toSet());
 
-                    return ProductsResponse.builder()
+                    return Products.builder()
                             .productId(product.getProductId())
                             .productName(product.getProductName())
                             .description(product.getDescription())
@@ -62,5 +57,19 @@ public class ProductService {
                             .build();
                 })
                 .toList();
+    }
+
+    public ProductDetails findProductById(String productId) {
+        app.e_market_services.products.model.Products product = productsRepository.findById(productId).orElse(null);
+        if (Objects.isNull(product))
+            return null;
+
+        return ProductDetails.builder()
+                .productId(product.getProductId())
+                .productName(product.getProductName())
+                .description(product.getDescription())
+                .price(product.getPrice())
+                .stockQuantity(product.getStockQuantity())
+                .build();
     }
 }
