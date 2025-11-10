@@ -1,22 +1,22 @@
 package app.e_market_services.categories.model;
 
+import app.e_market_services.base.Model.BaseEntity;
 import app.e_market_services.products.model.Products;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper=true)
 @Table(name = "categories")
-public class Categories {
+public class Category extends BaseEntity {
 
     @Id
     @UuidGenerator

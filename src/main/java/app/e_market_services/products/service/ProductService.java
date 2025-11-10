@@ -1,10 +1,10 @@
 package app.e_market_services.products.service;
 
-import app.e_market_services.categories.dto.Category;
+import app.e_market_services.categories.dto.response.Category;
 import app.e_market_services.products.dto.response.ProductDetails;
 import app.e_market_services.products.dto.response.Product;
+import app.e_market_services.products.model.Products;
 import app.e_market_services.products.repository.ProductsRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -35,7 +35,7 @@ public class ProductService {
                         .price(product.getPrice())
                         .merchantName(product.getMerchants() != null ? product.getMerchants().getMerchantName() : null)
                         .categories(new HashSet<>(product.getCategories()).stream()
-                                .map(cat -> new Category(cat.getCategoryId(), cat.getCategoryName()))
+                                .map(cat -> new Category(cat.getCategoryId(), cat.getCategoryName(), null, null))
                                 .collect(Collectors.toSet()))
                         .build())
                 .toList();
@@ -47,7 +47,7 @@ public class ProductService {
         return productsRepository.findAll().stream()
                 .map(product -> {
                     Set<Category> categories = product.getCategories().stream()
-                            .map(cat -> new Category(cat.getCategoryId(), cat.getCategoryName()))
+                            .map(cat -> new Category(cat.getCategoryId(), cat.getCategoryName(), null, null))
                             .collect(Collectors.toSet());
 
                     return Product.builder()
@@ -62,7 +62,7 @@ public class ProductService {
     }
 
     public ProductDetails findProductById(String productId) {
-        app.e_market_services.products.model.Products product = productsRepository.findById(productId).orElse(null);
+        Products product = productsRepository.findById(productId).orElse(null);
         if (Objects.isNull(product))
             return null;
 
