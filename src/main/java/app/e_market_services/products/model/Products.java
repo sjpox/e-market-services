@@ -1,6 +1,6 @@
 package app.e_market_services.products.model;
 
-import app.e_market_services.base.Model.Base;
+import app.e_market_services.base.Model.BaseEntity;
 import app.e_market_services.categories.model.Categories;
 import app.e_market_services.mechants.model.Merchants;
 import jakarta.persistence.*;
@@ -17,7 +17,7 @@ import java.util.*;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "products")
-public class Products extends Base {
+public class Products extends BaseEntity {
     @Id
     @UuidGenerator
     @Column(name = "product_id")

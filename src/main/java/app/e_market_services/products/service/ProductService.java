@@ -2,8 +2,9 @@ package app.e_market_services.products.service;
 
 import app.e_market_services.categories.dto.Category;
 import app.e_market_services.products.dto.response.ProductDetails;
-import app.e_market_services.products.dto.response.Products;
+import app.e_market_services.products.dto.response.Product;
 import app.e_market_services.products.repository.ProductsRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -25,9 +26,9 @@ public class ProductService {
         this.objectMapper = objectMapper;
     }
 
-    public List<Products> findAll() {
+    public List<Product> findAllWithCategoriesAndMerchants() {
         return productsRepository.findAllWithCategoriesAndMerchants().stream()
-                .map(product -> Products.builder()
+                .map(product -> Product.builder()
                         .productId(product.getProductId())
                         .productName(product.getProductName())
                         .description(product.getDescription())
@@ -40,15 +41,16 @@ public class ProductService {
                 .toList();
     }
 
-    public List<Products> findProductLists() {
+    public List<Product> findProductLists() {
         logger.info("service > findProductLists");
+
         return productsRepository.findAll().stream()
                 .map(product -> {
                     Set<Category> categories = product.getCategories().stream()
                             .map(cat -> new Category(cat.getCategoryId(), cat.getCategoryName()))
                             .collect(Collectors.toSet());
 
-                    return Products.builder()
+                    return Product.builder()
                             .productId(product.getProductId())
                             .productName(product.getProductName())
                             .description(product.getDescription())
@@ -70,6 +72,8 @@ public class ProductService {
                 .description(product.getDescription())
                 .price(product.getPrice())
                 .stockQuantity(product.getStockQuantity())
+                .createdAt(product.getCreatedAt())
+                .updatedAt(product.getUpdatedAt())
                 .build();
     }
 }
