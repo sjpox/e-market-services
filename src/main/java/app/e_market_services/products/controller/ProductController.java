@@ -5,7 +5,7 @@ import java.util.List;
 import app.e_market_services.common.constant.HttpStatusDesc;
 import app.e_market_services.common.response.ApiResponse;
 import app.e_market_services.products.dto.response.ProductDetails;
-import app.e_market_services.products.dto.response.Products;
+import app.e_market_services.products.dto.response.Product;
 import app.e_market_services.products.service.ProductService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
@@ -25,21 +25,21 @@ public class ProductController {
     }
 
     @GetMapping("/allProducts")
-    public ResponseEntity<ApiResponse<List<Products>>> findAllProducts() throws JsonProcessingException {
+    public ResponseEntity<ApiResponse<List<Product>>> findAllProducts() throws JsonProcessingException {
         return ResponseEntity.ok()
                 .body(ApiResponse
-                        .<List<Products>>builder()
+                        .<List<Product>>builder()
                         .status(HttpStatusDesc.SUCCESS)
-                        .result(productService.findAll())
+                        .result(productService.findAllWithCategoriesAndMerchants())
                         .build());
     }
 
     @GetMapping("/products")
-    public ResponseEntity<ApiResponse<List<Products>>> findProductLists() throws JsonProcessingException {
+    public ResponseEntity<ApiResponse<List<Product>>> findProductLists() throws JsonProcessingException {
         logger.info("controller > findProductLists");
         return ResponseEntity.ok()
                 .body(ApiResponse
-                        .<List<Products>>builder()
+                        .<List<Product>>builder()
                         .status(HttpStatusDesc.SUCCESS)
                         .result(productService.findProductLists())
                         .build());

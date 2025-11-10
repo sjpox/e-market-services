@@ -10,9 +10,10 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
+@Getter
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Products {
+public class Product {
     private String productId;
     private String productName;
     private String description;
