@@ -4,17 +4,15 @@ import java.util.List;
 
 import app.e_market_services.common.constant.HttpStatusDesc;
 import app.e_market_services.common.response.ApiResponse;
-import app.e_market_services.products.dto.ProductsResponse;
+import app.e_market_services.products.dto.response.ProductDetails;
+import app.e_market_services.products.dto.response.Products;
 import app.e_market_services.products.service.ProductService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -27,23 +25,34 @@ public class ProductController {
     }
 
     @GetMapping("/allProducts")
-    public ResponseEntity<ApiResponse<List<ProductsResponse>>> findAllProducts() throws JsonProcessingException {
+    public ResponseEntity<ApiResponse<List<Products>>> findAllProducts() throws JsonProcessingException {
         return ResponseEntity.ok()
                 .body(ApiResponse
-                        .<List<ProductsResponse>>builder()
+                        .<List<Products>>builder()
                         .status(HttpStatusDesc.SUCCESS)
                         .result(productService.findAll())
                         .build());
     }
 
     @GetMapping("/products")
-    public ResponseEntity<ApiResponse<List<ProductsResponse>>> findProductLists() throws JsonProcessingException {
+    public ResponseEntity<ApiResponse<List<Products>>> findProductLists() throws JsonProcessingException {
         logger.info("controller > findProductLists");
         return ResponseEntity.ok()
                 .body(ApiResponse
-                        .<List<ProductsResponse>>builder()
+                        .<List<Products>>builder()
                         .status(HttpStatusDesc.SUCCESS)
                         .result(productService.findProductLists())
                         .build());
+    }
+
+    @GetMapping("/productDetails")
+    public ResponseEntity<ApiResponse<ProductDetails>> findProductById(@RequestParam("productId") String productId) {
+        logger.info("controller > findProductById");
+        return ResponseEntity.ok()
+                .body(ApiResponse.<ProductDetails>builder()
+                        .status(HttpStatusDesc.SUCCESS)
+                        .result(productService.findProductById(productId))
+                        .build());
+
     }
 }

@@ -1,13 +1,10 @@
-package app.e_market_services.products.dto;
+package app.e_market_services.products.dto.response;
 
-import app.e_market_services.categories.dto.Category;
-import app.e_market_services.categories.model.Categories;
+import app.e_market_services.base.Model.Base;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,11 +12,10 @@ import java.util.Set;
 @Setter
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ProductsResponse {
+public class ProductDetails extends Base {
     private String productId;
     private String productName;
     private String description;
     private BigDecimal price;
-    private String merchantName;
-    private Set<Category> categories;
+    private int stockQuantity;
 }
