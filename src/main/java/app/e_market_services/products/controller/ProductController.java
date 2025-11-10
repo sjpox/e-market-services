@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/products")
+@RequestMapping("/api/product/v1")
 public class ProductController {
     private final ProductService productService;
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
@@ -26,7 +26,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping
+    @GetMapping("/allProducts")
     public ResponseEntity<ApiResponse<List<ProductsResponse>>> findAllProducts() throws JsonProcessingException {
         return ResponseEntity.ok()
                 .body(ApiResponse
@@ -36,7 +36,7 @@ public class ProductController {
                         .build());
     }
 
-    @GetMapping("/list")
+    @GetMapping("/products")
     public ResponseEntity<ApiResponse<List<ProductsResponse>>> findProductLists() throws JsonProcessingException {
         logger.info("controller > findProductLists");
         return ResponseEntity.ok()
