@@ -1,6 +1,7 @@
 package app.e_market_services.products.service;
 
-import app.e_market_services.categories.dto.response.Category;
+import app.e_market_services.categories.dto.CategoryDto;
+import app.e_market_services.categories.dto.response.CategoryResponse;
 import app.e_market_services.products.dto.response.ProductDetails;
 import app.e_market_services.products.dto.response.Product;
 import app.e_market_services.products.model.Products;
@@ -35,7 +36,7 @@ public class ProductService {
                         .price(product.getPrice())
                         .merchantName(product.getMerchants() != null ? product.getMerchants().getMerchantName() : null)
                         .categories(new HashSet<>(product.getCategories()).stream()
-                                .map(cat -> new Category(cat.getCategoryId(), cat.getCategoryName(), null, null))
+                                .map(cat -> new CategoryDto(cat.getCategoryId(), cat.getCategoryName()))
                                 .collect(Collectors.toSet()))
                         .build())
                 .toList();
@@ -46,8 +47,8 @@ public class ProductService {
 
         return productsRepository.findAll().stream()
                 .map(product -> {
-                    Set<Category> categories = product.getCategories().stream()
-                            .map(cat -> new Category(cat.getCategoryId(), cat.getCategoryName(), null, null))
+                    Set<CategoryDto> categories = product.getCategories().stream()
+                            .map(cat -> new CategoryDto(cat.getCategoryId(), cat.getCategoryName()))
                             .collect(Collectors.toSet());
 
                     return Product.builder()

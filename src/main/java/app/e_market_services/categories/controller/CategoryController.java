@@ -1,19 +1,18 @@
 package app.e_market_services.categories.controller;
 
-import app.e_market_services.categories.dto.response.Category;
+import app.e_market_services.categories.dto.request.CategoryRequest;
+import app.e_market_services.categories.dto.response.CategoryResponse;
 import app.e_market_services.categories.service.CategoryService;
 import app.e_market_services.common.constant.HttpStatusDesc;
 import app.e_market_services.common.response.ApiResponse;
-import org.springframework.http.HttpStatus;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/category/v1")
+@RequestMapping("/api/v1")
 public class CategoryController {
     private final CategoryService categoryService;
     public CategoryController(CategoryService categoryService) {
@@ -21,12 +20,21 @@ public class CategoryController {
     }
 
     @GetMapping("/categories")
-    public ResponseEntity<ApiResponse<List<Category>>> findAllCategories() {
+    public ResponseEntity<ApiResponse<List<CategoryResponse>>> findAllCategories() {
         return ResponseEntity.ok()
                 .body(ApiResponse
-                        .<List<Category>>builder()
+                        .<List<CategoryResponse>>builder()
                         .status(HttpStatusDesc.SUCCESS)
                         .result(categoryService.findAllCategories())
+                        .build());
+    }
+
+    @PostMapping("/category")
+    public ResponseEntity<ApiResponse<CategoryResponse>> createCategory(@RequestBody CategoryRequest categoryRequest) throws BadRequestException {
+        return ResponseEntity.ok()
+                . body(ApiResponse.<CategoryResponse>builder()
+                        .status(HttpStatusDesc.SUCCESS)
+                        .result(categoryService.createCategory(categoryRequest))
                         .build());
     }
 }
