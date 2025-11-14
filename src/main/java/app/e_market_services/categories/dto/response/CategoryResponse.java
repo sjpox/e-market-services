@@ -11,9 +11,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Category {
+public class CategoryResponse {
     private String categoryId;
     private String categoryName;
+    private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
