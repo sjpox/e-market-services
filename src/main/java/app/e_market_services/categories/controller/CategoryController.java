@@ -37,4 +37,15 @@ public class CategoryController {
                         .result(categoryService.createCategory(categoryRequest))
                         .build());
     }
+
+    @PutMapping("/category/{id}")
+    public ResponseEntity<ApiResponse<CategoryResponse>> updateCategory(
+            @PathVariable String id,
+            @RequestBody CategoryRequest categoryRequest) {
+        return ResponseEntity.ok()
+                .body(ApiResponse.<CategoryResponse>builder()
+                        .status(HttpStatusDesc.SUCCESS)
+                        .result(categoryService.updateCategory(id, categoryRequest))
+                        .build());
+    }
 }

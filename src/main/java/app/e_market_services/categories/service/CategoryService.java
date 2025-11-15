@@ -24,6 +24,7 @@ public class CategoryService {
                 .map(category -> CategoryResponse.builder()
                         .categoryId(category.getCategoryId())
                         .categoryName(category.getCategoryName())
+                        .description(category.getDescription())
                         .createdAt(category.getCreatedAt())
                         .updatedAt(category.getUpdatedAt())
                         .build())
@@ -41,6 +42,20 @@ public class CategoryService {
         return CategoryResponse.builder()
                 .categoryName(savedCategory.getCategoryName())
                 .description(savedCategory.getDescription())
+                .build();
+    }
+
+    public CategoryResponse updateCategory(String id, CategoryRequest categoryRequest) {
+        Category updateCategory = categoryRepository.save(
+                Category.builder()
+                        .categoryName(categoryRequest.getCategoryName())
+                        .description(categoryRequest.getDescription())
+                        .categoryId(id)
+                        .build());
+
+        return CategoryResponse.builder()
+                .categoryName(updateCategory.getCategoryName())
+                .description(updateCategory.getDescription())
                 .build();
     }
 }
