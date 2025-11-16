@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ProductDetails extends BaseEntity {
+public class ProductResponse extends BaseEntity {
     private String productId;
     private String productName;
     private String description;
