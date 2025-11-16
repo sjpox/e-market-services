@@ -35,6 +35,7 @@ dependencies {
     implementation 'org.flywaydb:flyway-mysql'
 
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
 
     // ✅ JSON Web Token (JJWT) — fixed, works with Maven Central
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
