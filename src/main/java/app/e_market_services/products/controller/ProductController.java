@@ -4,7 +4,8 @@ import java.util.List;
 
 import app.e_market_services.common.constant.HttpStatusDesc;
 import app.e_market_services.common.response.ApiResponse;
-import app.e_market_services.products.dto.response.ProductDetails;
+import app.e_market_services.products.dto.request.ProductRequest;
+import app.e_market_services.products.dto.response.ProductResponse;
 import app.e_market_services.products.dto.response.Product;
 import app.e_market_services.products.service.ProductService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/product/v1")
+@RequestMapping("/api/v1")
 public class ProductController {
     private final ProductService productService;
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
@@ -46,13 +47,25 @@ public class ProductController {
     }
 
     @GetMapping("/productDetails")
-    public ResponseEntity<ApiResponse<ProductDetails>> findProductById(@RequestParam("productId") String productId) {
+    public ResponseEntity<ApiResponse<ProductResponse>> findProductById(@RequestParam("productId") String productId) {
         logger.info("controller > findProductById");
         return ResponseEntity.ok()
-                .body(ApiResponse.<ProductDetails>builder()
+                .body(ApiResponse.<ProductResponse>builder()
                         .status(HttpStatusDesc.SUCCESS)
                         .result(productService.findProductById(productId))
                         .build());
 
+    }
+
+    @PutMapping("/product/{id}")
+    public ResponseEntity<ApiResponse<ProductResponse>> updateProduct(
+            @PathVariable String id,
+            @RequestBody ProductRequest productRequest
+    ) throws RuntimeException{
+        return ResponseEntity.ok()
+                .body(ApiResponse.<ProductResponse>builder()
+                        .status(HttpStatusDesc.SUCCESS)
+                        .result(productService.updateProduct(id, productRequest))
+                        .build());
     }
 }
