@@ -68,4 +68,15 @@ public class ProductController {
                         .result(productService.updateProduct(id, productRequest))
                         .build());
     }
+
+    @DeleteMapping("/product/{id}")
+    public ResponseEntity<ApiResponse<Boolean>> deleteProduct(
+            @PathVariable String id
+    ) {
+        return ResponseEntity.ok()
+                .body(ApiResponse.<Boolean>builder()
+                        .status(HttpStatusDesc.SUCCESS)
+                        .result(productService.deleteProduct(id))
+                        .build());
+    }
 }
