@@ -102,4 +102,13 @@ public class ProductService {
                 .stockQuantity(savedProduct.getStockQuantity())
                 .build();
     }
+
+    public Boolean deleteProduct(String id) {
+        try {
+            productsRepository.deleteById(id);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
