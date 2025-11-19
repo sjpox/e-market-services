@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import app.e_market_services.users.dto.UserRequestDto;
+import app.e_market_services.users.dto.request.UserRequest;
 import app.e_market_services.users.dto.UserResponseDto;
 import app.e_market_services.users.model.Users;
 import app.e_market_services.users.repository.UsersRepository;
@@ -33,17 +33,31 @@ public class UserService {
                 .toList();
     }
 
-    public UserResponseDto createUser(UserRequestDto user) {
+    public UserResponseDto createUser(UserRequest user) {
         String hashedPassword = passwordEncoder.encode(user.getPassword());
-        Users users = Users.builder().email(user.getEmail()).firstName(user.getName())
+        Users users = Users.builder().email(user.getEmail()).firstName(user.getFirstName())
                 .passwordHash(hashedPassword).build();
         Users createdUser = usersRepository.save(users);
         return objectMapper.convertValue(createdUser, UserResponseDto.class);
     }
 
-    public Boolean verifyUser(UserRequestDto user) {
+    public Boolean verifyUser(UserRequest user) {
         Users verifiedUser = usersRepository.findByEmail(user.getEmail()).orElseThrow(()-> new RuntimeException("User not found"));
         log.info("UserModel {}", verifiedUser);
         return passwordEncoder.matches(user.getPassword(), verifiedUser.getPasswordHash());
+    }
+
+    public UserResponseDto updateUserDetails(String email, UserRequest userRequest) {
+        Users user = usersRepository.findByEmail(email)
+                .orElseThrow(RuntimeException::new);
+
+        user.setFirstName(userRequest.getFirstName());
+        user.setLastName(userRequest.getLastName());
+
+        Users savedUser = usersRepository.save(user);
+        return UserResponseDto.builder()
+                .firstName(savedUser.getFirstName())
+                .lastName(savedUser.getLastName())
+                .build();
     }
 }
