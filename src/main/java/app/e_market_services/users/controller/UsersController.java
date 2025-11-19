@@ -12,17 +12,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import app.e_market_services.common.ApiException;
 import app.e_market_services.common.constant.HttpStatusDesc;
 import app.e_market_services.common.response.ApiResponse;
 import app.e_market_services.jwt.service.JwtService;
-import app.e_market_services.users.dto.UserRequestDto;
+import app.e_market_services.users.dto.request.UserRequest;
 import app.e_market_services.users.dto.UserResponseDto;
 import app.e_market_services.users.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -51,7 +47,7 @@ public class UsersController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<UserResponseDto>> createUser(@RequestBody UserRequestDto user) {
+    public ResponseEntity<ApiResponse<UserResponseDto>> createUser(@RequestBody UserRequest user) {
         return ResponseEntity.ok()
                 .body(ApiResponse.<UserResponseDto>builder().status(HttpStatusDesc.SUCCESS)
                         .result(userService.createUser(user)).build());
@@ -59,7 +55,7 @@ public class UsersController {
 
     // TODO: UserTokenModel should be replace with DTO
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<TokenResponse>> loginUser(@RequestBody UserRequestDto user,
+    public ResponseEntity<ApiResponse<TokenResponse>> loginUser(@RequestBody UserRequest user,
             HttpServletResponse response) throws JsonProcessingException {
         log.info("User {}", new ObjectMapper().writeValueAsString(user));
         Boolean isValid = userService.verifyUser(user);
@@ -70,8 +66,8 @@ public class UsersController {
         Map<String, Object> claims = Map.of("roles", List.of("ROLE_ADMIN"));
 
     
-        String accessToken = jwtService.generateToken(user.email, claims);
-        String refreshToken = jwtService.generateRefreshToken(user.email, claims);
+        String accessToken = jwtService.generateToken(user.getEmail(), claims);
+        String refreshToken = jwtService.generateRefreshToken(user.getEmail(), claims);
 
         // Create secure, HTTP-only cookies
         ResponseCookie accessCookie = ResponseCookie.from("access_token", accessToken)
@@ -99,6 +95,18 @@ public class UsersController {
                                 TokenResponse.builder()
                                         .accessToken(accessToken)
                                         .refreshToken(refreshToken).build())
+                        .build());
+    }
+
+    @PutMapping("/{email}")
+    public ResponseEntity<ApiResponse<UserResponseDto>> updateUserDetails(
+            @PathVariable String email,
+            @RequestBody UserRequest userRequest
+    ) {
+        return ResponseEntity.ok()
+                .body(ApiResponse.<UserResponseDto>builder()
+                        .status(HttpStatusDesc.SUCCESS)
+                        .result(userService.updateUserDetails(email, userRequest))
                         .build());
     }
 
